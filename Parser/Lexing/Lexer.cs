@@ -8,12 +8,16 @@ namespace Paradox.Lexing
 
     public static class Tokenizer
     {
-        // Parser for identifiers: sequences of letters and digits starting with a letter
+        private static readonly Parser<char, char> LetterOrDigitOrExtra =
+            LetterOrDigit.Or(Char('.')).Or(Char(':'));
+
+            
         private static readonly Parser<char, Token> Identifier =
             Map(
                 value => new Token(TokenType.Identifier, value),
-                Letter.Then(LetterOrDigit.ManyString(), (first, rest) => first + rest)
+                Letter.Then(LetterOrDigitOrExtra.ManyString(), (first, rest) => first + rest)
             );
+
 
         // Parser for the '=' symbol
         private static readonly Parser<char, Token> EqualSign =
@@ -28,16 +32,10 @@ namespace Paradox.Lexing
             Char('}').ThenReturn(new Token(TokenType.BracketClose));
 
         // Parser for the '.' symbol
-        private static readonly Parser<char, Token> Dot =
-            Char('.').ThenReturn(new Token(TokenType.Dot));
-
-        // Parser for the ':' symbol
-        private static readonly Parser<char, Token> Colon =
-            Char(':').ThenReturn(new Token(TokenType.Colon));
 
         // Combined parser for all token types
         private static readonly Parser<char, Token> TokenParser =
-            OneOf(Identifier, EqualSign, BracketOpen, BracketClose, Dot, Colon);
+            OneOf(Identifier, EqualSign, BracketOpen, BracketClose);
 
         // Parser that skips whitespace
         private static readonly Parser<char, Unit> SkipWhitespace =

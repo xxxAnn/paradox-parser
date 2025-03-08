@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Parser\paradox-parser.csproj" />
+    <ProjectReference Include="..\Parser\Paradox.csproj" />
   </ItemGroup>
 
 </Project>

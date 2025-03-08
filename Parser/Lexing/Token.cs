@@ -5,9 +5,7 @@ namespace Paradox.Lexing
         Identifier,
         BracketOpen,
         BracketClose,
-        EqualSign,
-        Dot,
-        Colon
+        EqualSign
     }
 
     public class Token
@@ -47,6 +45,13 @@ namespace Paradox.Lexing
         {
             TokenValue = new Literal(type);
         }
+
+        public TokenType Type => TokenValue.Type;
+        public string Value => TokenValue switch
+        {
+            Identifier i => i.Value,
+            _ => throw new System.Exception("Token is not an identifier")
+        };
 
         // overwrite for printing this type
         public override string ToString()
